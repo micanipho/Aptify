@@ -40,21 +40,22 @@ for refinement reliability, take the refinement side.
 
 ## Commands
 
-| Purpose        | Command              |
-| -------------- | -------------------- |
-| Install        | `pnpm install`       |
-| Dev server     | `pnpm dev`           |
-| Type check     | `pnpm typecheck`     |
-| Lint           | `pnpm lint`          |
-| Test           | `pnpm test`          |
-| Build          | `pnpm build`         |
-| DB schema push | `pnpm db:push`       |
-| Eval harness   | `pnpm eval:build`    |
+Backend (Go, repo root). Frontend commands arrive with `web/`.
+
+| Purpose        | Command                 |
+| -------------- | ----------------------- |
+| Build          | `go build ./...`        |
+| Vet            | `go vet ./...`          |
+| Lint           | `golangci-lint run`     |
+| Format check   | `gofmt -l .`            |
+| Test           | `go test ./...`         |
 
 ## Hard rules
 
 - **Never** write code that executes generated output inside this process. All
-  generated code runs in the sandbox (`src/infra/sandbox/`). No exceptions.
-- **Never** put a secret in `src/domain/` or pass one into a sandbox call.
-- **Never** mutate a run's status outside `src/domain/run/transition.ts`.
-- **Never** import from `src/infra/` inside `src/domain/` or `src/application/`.
+  generated code runs in the sandbox (`internal/infra/sandbox/`). No exceptions.
+- **Never** put a secret in `internal/domain/` or pass one into a sandbox call.
+- **Never** mutate a run's status outside `internal/domain/run/transition.go`.
+- **Never** import from `internal/infra/` or `internal/http/` inside `internal/domain/` or
+  `internal/app/`.
+- **Never** skip an unknown event type when decoding the log; it is an error.
