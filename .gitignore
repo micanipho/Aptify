@@ -1,0 +1,21 @@
+# Go
+/bin/
+*.exe
+*.test
+*.out
+coverage.*
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Frontend (web/)
+node_modules/
+.next/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

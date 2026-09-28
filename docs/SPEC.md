@@ -227,9 +227,11 @@ Evaluated in this order:
 2. `cancelRequested` → **finish: cancelled**.
 3. `cost.cents >= maxCostCents` → **finish: failed** "Cost ceiling reached (x/y cents)."
 4. `now - startedAt >= maxWallClockMs` → **finish: failed** "Wall-clock budget exceeded."
-5. Validation failures present → if `repairAttempts >= maxRepairAttempts` → **finish: failed**
-   "Validation still failing after N repair attempts."; else **step: repair, attempt
-   repairAttempts+1**.
+5. Validation failures present → if status is `repairing` (a repair was started and never
+   succeeded — interrupted mid-flight) → **step: repair, same attempt** (resume; the attempt
+   was already counted, so this comes before the budget check). Otherwise, if
+   `repairAttempts >= maxRepairAttempts` → **finish: failed** "Validation still failing after
+   N repair attempts."; else **step: repair, attempt repairAttempts+1**.
 6. Status is `repairing` (repair just succeeded) → **step: validate, attempt+1**.
 7. First pipeline step not in `completed` → **step**. If the run is already sitting in that
    step's status (interrupted mid-flight), **resume the same attempt number**; otherwise

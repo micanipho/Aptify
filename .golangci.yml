@@ -1,0 +1,8 @@
+version: "2"
+
+linters:
+  enable:
+    # Switches over enum-like string types must name every value.
+    - exhaustive
+    # Switches over sealed interfaces (//sumtype:decl, e.g. run.Event) must name every member.
+    - gochecksumtype
